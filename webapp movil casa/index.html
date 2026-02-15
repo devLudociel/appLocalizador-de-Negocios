@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruta de Tiendas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-bg: #FAFAFA;
+            --color-card: #FFFFFF;
+            --color-text: #1A1A1A;
+            --color-text-soft: #6B7280;
+            --color-accent: #2563EB;
+            --color-accent-hover: #1D4ED8;
+            --color-border: #E5E7EB;
+            --color-route-line: #CBD5E1;
+            --shadow-soft: 0 2px 8px rgba(0,0,0,0.06);
+            --shadow-card: 0 4px 20px rgba(0,0,0,0.08);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.5;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 420px;
+            margin: 0 auto;
+            padding: 0 16px;
+            padding-bottom: 40px;
+        }
+
+        /* ============ HEADER ============ */
+        .header {
+            text-align: center;
+            padding: 32px 16px 24px;
+            background: linear-gradient(180deg, #FFFFFF 0%, var(--color-bg) 100%);
+        }
+
+        .logo-placeholder {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 16px;
+            background: linear-gradient(135deg, #E0E7FF 0%, #C7D2FE 100%);
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .header h1 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+        }
+
+        .header .tagline {
+            color: var(--color-text-soft);
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .header .tagline svg {
+            width: 16px;
+            height: 16px;
+            color: var(--color-accent);
+        }
+
+        /* ============ MAPA ============ */
+        .map-section {
+            margin: 0 0 24px;
+        }
+
+        .map-container {
+            background: var(--color-card);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-card);
+            overflow: hidden;
+            aspect-ratio: 4/3;
+            position: relative;
+        }
+
+        .map-placeholder {
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 50%, #F0FDFA 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            color: var(--color-text-soft);
+            font-size: 0.9rem;
+        }
+
+        .map-placeholder .icons-row {
+            display: flex;
+            gap: 24px;
+            margin-top: 8px;
+        }
+
+        .map-placeholder .map-icon {
+            width: 44px;
+            height: 44px;
+            background: var(--color-card);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: var(--shadow-soft);
+            position: relative;
+        }
+
+        .map-placeholder .map-icon .number {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            width: 18px;
+            height: 18px;
+            background: var(--color-accent);
+            color: white;
+            border-radius: 50%;
+            font-size: 11px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .map-placeholder p {
+            margin-top: 8px;
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+
+        /* ============ TARJETAS TIENDAS ============ */
+        .stores-section {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .store-card {
+            background: var(--color-card);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            box-shadow: var(--shadow-soft);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .store-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-card);
+        }
+
+        .store-icon {
+            width: 52px;
+            height: 52px;
+            background: linear-gradient(135deg, #EEF2FF 0%, #E0E7FF 100%);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .store-logo {
+            width: 60px;
+            height: 60px;
+            background: #FFFFFF;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--color-border);
+        }
+
+        .store-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 4px;
+        }
+
+        .store-logo.bazar-logo {
+            background: #1a1a1a;
+        }
+
+        .store-number {
+            position: absolute;
+            top: -6px;
+            left: -6px;
+            width: 22px;
+            height: 22px;
+            background: var(--color-accent);
+            color: white;
+            border-radius: 50%;
+            font-size: 12px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--color-card);
+        }
+
+        .store-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .store-name {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 2px;
+        }
+
+        .store-desc {
+            color: var(--color-text-soft);
+            font-size: 0.85rem;
+            margin-bottom: 4px;
+        }
+
+        .store-time {
+            font-size: 0.8rem;
+            color: var(--color-accent);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .store-time svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .store-btn {
+            background: var(--color-accent);
+            color: white;
+            border: none;
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.1s ease;
+            white-space: nowrap;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .store-btn:hover {
+            background: var(--color-accent-hover);
+        }
+
+        .store-btn:active {
+            transform: scale(0.96);
+        }
+
+        .store-btn svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        /* ============ RUTA SUGERIDA ============ */
+        .route-section {
+            background: var(--color-card);
+            border-radius: var(--radius-md);
+            padding: 16px 20px;
+            box-shadow: var(--shadow-soft);
+            margin-bottom: 24px;
+        }
+
+        .route-title {
+            font-size: 0.8rem;
+            color: var(--color-text-soft);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+
+        .route-steps {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .route-step {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--color-accent) 0%, #3B82F6 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+
+        .route-arrow {
+            color: var(--color-route-line);
+            font-size: 1.2rem;
+        }
+
+        /* ============ FOOTER ============ */
+        .footer {
+            text-align: center;
+            padding: 20px 16px;
+            border-top: 1px solid var(--color-border);
+        }
+
+        .footer-badges {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .footer-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--color-text-soft);
+            font-size: 0.85rem;
+        }
+
+        .footer-badge svg {
+            width: 18px;
+            height: 18px;
+            color: var(--color-accent);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background: var(--color-card);
+            border: 1px solid var(--color-border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-text-soft);
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .social-link:hover {
+            border-color: var(--color-accent);
+            color: var(--color-accent);
+            transform: translateY(-2px);
+        }
+
+        .social-link svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .lang-switch {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .lang-btn {
+            padding: 6px 12px;
+            border: 1px solid var(--color-border);
+            background: var(--color-card);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .lang-btn:hover,
+        .lang-btn.active {
+            border-color: var(--color-accent);
+            color: var(--color-accent);
+        }
+
+        .lang-btn.active {
+            background: #EEF2FF;
+        }
+
+        /* ============ ANIMACIONES ============ */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .map-section {
+            animation: fadeInUp 0.5s ease 0.1s both;
+        }
+
+        .store-card:nth-child(1) { animation: fadeInUp 0.4s ease 0.15s both; }
+        .store-card:nth-child(2) { animation: fadeInUp 0.4s ease 0.2s both; }
+        .store-card:nth-child(3) { animation: fadeInUp 0.4s ease 0.25s both; }
+        .store-card:nth-child(4) { animation: fadeInUp 0.4s ease 0.3s both; }
+
+        .route-section {
+            animation: fadeInUp 0.4s ease 0.35s both;
+        }
+
+        .footer {
+            animation: fadeInUp 0.4s ease 0.4s both;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HEADER -->
+        <header class="header">
+            <div class="logo-placeholder">
+                🏪
+            </div>
+            <h1>Nuestras Tiendas</h1>
+            <p class="tagline">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                </svg>
+                Todo cerca de ti
+            </p>
+        </header>
+
+        <!-- MAPA -->
+        <section class="map-section">
+            <div class="map-container">
+                <div class="map-placeholder">
+                    <span style="font-size: 2rem;">🗺️</span>
+                    <span>Mapa ilustrado aquí</span>
+                    <div class="icons-row">
+                        <div class="map-icon">📱<span class="number">1</span></div>
+                        <div class="map-icon">📱<span class="number">2</span></div>
+                        <div class="map-icon">🛒<span class="number">3</span></div>
+                        <div class="map-icon">🎁<span class="number">4</span></div>
+                    </div>
+                    <p>Reemplaza con tu imagen</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- TARJETAS DE TIENDAS -->
+        <section class="stores-section">
+            <!-- Tienda 1 -->
+            <article class="store-card">
+                <div class="store-logo">
+                    <span class="store-number">1</span>
+                    <img src="img/movil_casa.png" alt="Móvil Casa">
+                </div>
+                <div class="store-info">
+                    <h3 class="store-name">Móvil Casa</h3>
+                    <p class="store-desc">Reparación electrónica y accesorios</p>
+                    <span class="store-time">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        5 min caminando
+                    </span>
+                </div>
+                <a href="https://www.google.com/maps/place/M%C3%B3vil+Casa/@28.6595861,-17.9137866,21z/data=!4m6!3m5!1s0xc6bf37eb688a453:0xfc74a1666e05d352!8m2!3d28.6596842!4d-17.9138004" target="_blank" class="store-btn">
+                    Ir
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                    </svg>
+                </a>
+            </article>
+
+            <!-- Tienda 2 -->
+            <article class="store-card">
+                <div class="store-logo">
+                    <span class="store-number">2</span>
+                    <img src="img/movil_casa.png" alt="Móvil Casa Trocadero">
+                </div>
+                <div class="store-info">
+                    <h3 class="store-name">Móvil Casa – Trocadero</h3>
+                    <p class="store-desc">Accesorios, fundas y electrónica</p>
+                    <span class="store-time">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        5 min caminando
+                    </span>
+                </div>
+                <a href="https://www.google.com/maps/place/Centro+Comercial+Trocadero/@28.6576235,-17.9120493,20z/data=!4m6!3m5!1s0xc6bf3d1f331fdb3:0x5a373a2ad5fd3b3e!8m2!3d28.6575057!4d-17.9120534" target="_blank" class="store-btn">
+                    Ir
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                    </svg>
+                </a>
+            </article>
+
+            <!-- Tienda 3 -->
+            <article class="store-card">
+                <div class="store-logo bazar-logo">
+                    <span class="store-number">3</span>
+                    <img src="img/bazar_DyM.png" alt="Bazar DyM">
+                </div>
+                <div class="store-info">
+                    <h3 class="store-name">Bazar DyM</h3>
+                    <p class="store-desc">Hogar, papelería, ferretería y más</p>
+                    <span class="store-time">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        5 min caminando
+                    </span>
+                </div>
+                <a href="https://www.google.com/maps/@28.6583651,-17.9162994,3a,71.7y,179.48h,77.43t/data=!3m7!1e1!3m5!1scHqmC8OwXy-5MAidoatlPA!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D12.56687927662766%26panoid%3DcHqmC8OwXy-5MAidoatlPA%26yaw%3D179.483204235235!7i16384!8i8192" target="_blank" class="store-btn">
+                    Ir
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                    </svg>
+                </a>
+            </article>
+
+            <!-- Tienda 4 -->
+            <article class="store-card">
+                <div class="store-logo">
+                    <span class="store-number">4</span>
+                    <img src="img/la_palma_shopping.png" alt="La Palma Shopping">
+                </div>
+                <div class="store-info">
+                    <h3 class="store-name">La Palma Shopping</h3>
+                    <p class="store-desc">Tienda de recuerdos</p>
+                    <span class="store-time">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        5 min caminando
+                    </span>
+                </div>
+                <a href="https://www.google.com/maps/place/la+palma+shopping/@28.658754,-17.9128723,21z/data=!4m6!3m5!1s0xc6bf35d83c5609f:0xa9e1ef1545558cbc!8m2!3d28.6585626!4d-17.9127014" target="_blank" class="store-btn">
+                    Ir
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                    </svg>
+                </a>
+            </article>
+        </section>
+
+        <!-- RUTA SUGERIDA -->
+        <section class="route-section">
+            <h4 class="route-title">Ruta sugerida</h4>
+            <div class="route-steps">
+                <span class="route-step">1</span>
+                <span class="route-arrow">→</span>
+                <span class="route-step">2</span>
+                <span class="route-arrow">→</span>
+                <span class="route-step">3</span>
+                <span class="route-arrow">→</span>
+                <span class="route-step">4</span>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="footer">
+            <div class="footer-badges">
+                <span class="footer-badge">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                    </svg>
+                    Todo a menos de 5 min
+                </span>
+                <span class="footer-badge">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12.75 3.03v.568c0 .334.148.65.405.864l1.068.89c.442.369.535 1.01.216 1.49l-.51.766a2.25 2.25 0 01-1.161.886l-.143.048a1.107 1.107 0 00-.57 1.664c.369.555.169 1.307-.427 1.605L9 13.125l.423 1.059a.956.956 0 01-1.652.928l-.679-.906a1.125 1.125 0 00-1.906.172L4.5 15.75l-.612.153M12.75 3.031a9 9 0 00-8.862 12.872M12.75 3.031a9 9 0 016.69 14.036m0 0l-.177-.529A2.25 2.25 0 0017.128 15H16.5l-.324-.324a1.453 1.453 0 00-2.328.377l-.036.073a1.586 1.586 0 01-.982.816l-.99.282c-.55.157-.894.702-.8 1.267l.073.438c.08.474.49.821.97.821.846 0 1.598.542 1.865 1.345l.215.643m5.276-3.67a9.012 9.012 0 01-5.276 3.67m0 0a9 9 0 01-10.275-4.835M15.75 9c0 .896-.393 1.7-1.016 2.25" />
+                    </svg>
+                    Zona comercial
+                </span>
+            </div>
+
+            <div class="social-links">
+                <a href="https://www.instagram.com/movilcasatrocadero/" target="_blank" class="social-link" aria-label="Instagram Móvil Casa">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
+                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                        <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
+                    </svg>
+                </a>
+                <a href="https://www.facebook.com/MOVILCASALAPALMA" target="_blank" class="social-link" aria-label="Facebook Móvil Casa">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                    </svg>
+                </a>
+                <a href="https://www.facebook.com/profile.php?id=100094642223745" target="_blank" class="social-link" aria-label="Facebook Bazar DyM">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                    </svg>
+                </a>
+            </div>
+
+            <div class="lang-switch">
+                <button class="lang-btn active" data-lang="es">🇪🇸 ES</button>
+                <button class="lang-btn" data-lang="en">🇬🇧 EN</button>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // ============ TRADUCCIONES ============
+        const translations = {
+            es: {
+                brandName: "Nuestras Tiendas",
+                tagline: "Todo cerca de ti",
+                mapPlaceholder: "Mapa ilustrado aquí",
+                mapReplace: "Reemplaza con tu imagen",
+                routeTitle: "Ruta sugerida",
+                goBtn: "Ir",
+                // Tiendas
+                store1Name: "Móvil Casa",
+                store1Desc: "Reparación electrónica y accesorios",
+                store1Time: "5 min caminando",
+                store2Name: "Móvil Casa – Trocadero",
+                store2Desc: "Accesorios, fundas y electrónica",
+                store2Time: "5 min caminando",
+                store3Name: "Bazar DyM",
+                store3Desc: "Hogar, papelería, ferretería y más",
+                store3Time: "5 min caminando",
+                store4Name: "La Palma Shopping",
+                store4Desc: "Tienda de recuerdos",
+                store4Time: "5 min caminando",
+                // Footer
+                badge1: "Todo a menos de 5 min",
+                badge2: "Zona comercial"
+            },
+            en: {
+                brandName: "Our Stores",
+                tagline: "Everything close to you",
+                mapPlaceholder: "Illustrated map here",
+                mapReplace: "Replace with your image",
+                routeTitle: "Suggested route",
+                goBtn: "Go",
+                // Stores
+                store1Name: "Móvil Casa",
+                store1Desc: "Electronics repair & accessories",
+                store1Time: "5 min walk",
+                store2Name: "Móvil Casa – Trocadero",
+                store2Desc: "Accessories, cases & electronics",
+                store2Time: "5 min walk",
+                store3Name: "Bazar DyM",
+                store3Desc: "Home, stationery, hardware & more",
+                store3Time: "5 min walk",
+                store4Name: "La Palma Shopping",
+                store4Desc: "Souvenir shop",
+                store4Time: "5 min walk",
+                // Footer
+                badge1: "All within 5 min",
+                badge2: "Shopping area"
+            }
+        };
+
+        // ============ ELEMENTOS A TRADUCIR ============
+        function applyTranslations(lang) {
+            const t = translations[lang];
+            
+            // Header
+            document.querySelector('.header h1').textContent = t.brandName;
+            document.querySelector('.tagline').innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                </svg>
+                ${t.tagline}
+            `;
+
+            // Mapa
+            const mapPlaceholder = document.querySelector('.map-placeholder');
+            if (mapPlaceholder) {
+                mapPlaceholder.querySelector('span:nth-child(2)').textContent = t.mapPlaceholder;
+                mapPlaceholder.querySelector('p').textContent = t.mapReplace;
+            }
+
+            // Tiendas
+            const storeCards = document.querySelectorAll('.store-card');
+            const storeData = [
+                { name: t.store1Name, desc: t.store1Desc, time: t.store1Time },
+                { name: t.store2Name, desc: t.store2Desc, time: t.store2Time },
+                { name: t.store3Name, desc: t.store3Desc, time: t.store3Time },
+                { name: t.store4Name, desc: t.store4Desc, time: t.store4Time }
+            ];
+
+            storeCards.forEach((card, index) => {
+                card.querySelector('.store-name').textContent = storeData[index].name;
+                card.querySelector('.store-desc').textContent = storeData[index].desc;
+                const timeSpan = card.querySelector('.store-time');
+                timeSpan.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    ${storeData[index].time}
+                `;
+                card.querySelector('.store-btn').innerHTML = `
+                    ${t.goBtn}
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                    </svg>
+                `;
+            });
+
+            // Ruta
+            document.querySelector('.route-title').textContent = t.routeTitle;
+
+            // Footer badges
+            const badges = document.querySelectorAll('.footer-badge');
+            badges[0].innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                </svg>
+                ${t.badge1}
+            `;
+            badges[1].innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12.75 3.03v.568c0 .334.148.65.405.864l1.068.89c.442.369.535 1.01.216 1.49l-.51.766a2.25 2.25 0 01-1.161.886l-.143.048a1.107 1.107 0 00-.57 1.664c.369.555.169 1.307-.427 1.605L9 13.125l.423 1.059a.956.956 0 01-1.652.928l-.679-.906a1.125 1.125 0 00-1.906.172L4.5 15.75l-.612.153M12.75 3.031a9 9 0 00-8.862 12.872M12.75 3.031a9 9 0 016.69 14.036m0 0l-.177-.529A2.25 2.25 0 0017.128 15H16.5l-.324-.324a1.453 1.453 0 00-2.328.377l-.036.073a1.586 1.586 0 01-.982.816l-.99.282c-.55.157-.894.702-.8 1.267l.073.438c.08.474.49.821.97.821.846 0 1.598.542 1.865 1.345l.215.643m5.276-3.67a9.012 9.012 0 01-5.276 3.67m0 0a9 9 0 01-10.275-4.835M15.75 9c0 .896-.393 1.7-1.016 2.25" />
+                </svg>
+                ${t.badge2}
+            `;
+
+            // Guardar preferencia
+            localStorage.setItem('preferred-lang', lang);
+        }
+
+        // ============ INICIALIZACIÓN ============
+        document.addEventListener('DOMContentLoaded', () => {
+            const langBtns = document.querySelectorAll('.lang-btn');
+            
+            // Cargar idioma guardado o detectar del navegador
+            let savedLang = localStorage.getItem('preferred-lang');
+            if (!savedLang) {
+                const browserLang = navigator.language.slice(0, 2);
+                savedLang = browserLang === 'es' ? 'es' : 'en';
+            }
+
+            // Aplicar idioma inicial
+            applyTranslations(savedLang);
+            langBtns.forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.lang === savedLang);
+            });
+
+            // Eventos de cambio de idioma
+            langBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const lang = btn.dataset.lang;
+                    langBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    applyTranslations(lang);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
